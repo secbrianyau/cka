@@ -10,7 +10,7 @@ Get resources in a specified namespace:
 
 ```
 kubectl get pods --namespace my-namespace
-kubectl get pods -n my-namespce
+kubectl get pods -n my-namespce -o wide
 ```
 
 Get resources in all namespaces:
@@ -58,7 +58,8 @@ kubectl create namespace my-namespace
  
 ```
 kubectl drain <node>
-kubectl drain <node> --ignore daemonsets
+kubectl drain <node> --ignore-daemonsets
+kubectl drain <node> --ignore-daemonsets --force
 ```
 
 If the node remains part of the cluster, you can allow pods to run on the node again when maintenance is complete:
@@ -66,4 +67,27 @@ If the node remains part of the cluster, you can allow pods to run on the node a
 ```
 kubectl uncordon <node>
 ```
+
+<br/>
+
+## Upgrading K8S with kubeadm
+
+
+Control plane upgrade steps:
+
+1. Upgrade `kubeadm` on the control plane node
+2. Drain the control plane node
+3. Plan the upgrade `kubeadm upgrade plan`
+4. Apply the upgrade `kubeadm upgrade apply`
+5. Upgrade `kubelet` and `kubectl` on the control plane node
+6. `uncordon` the control plane node
+
+
+Worker node upgrade steps:
+
+1. Drain the node
+2. Upgrade `kubeadm`
+3. Upgrade the `kubelet` configuration `kubeadm ugprade node`
+4. Upgrade `kubelet` and `kubectl`
+5. `uncordon` the node
 
